@@ -1,1085 +1,492 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#000000"/>
-  <meta name="description" content="El Sommelier RD — Cursos gratuitos de vino y sommelier"/>
-  <title>Cursos — El Sommelier RD</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>El Sommelier RD — Academia del Vino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg:#09080A; --bg2:#0F0D10; --bg3:#140F11;
+  --fg:#EDE8E3; --fg-dim:#9A8E85;
+  --gold:#B8860B; --gold-b:#E8C840;
+  --gold-pale:rgba(184,134,11,0.12);
+  --burgundy:#800020; --burg-dim:#5A0016;
+  --cream:#F5EDD8;
+  --border:rgba(184,134,11,0.18);
+  --card-bg:rgba(255,255,255,0.03);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    body {
-      background: #000;
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    :root {
-      --gold: #B8860B;
-      --gold-bright: #E8C840;
-      --burgundy: #800020;
-      --text-dim: #777;
-    }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,env(safe-area-inset-left,0px));height:64px;transition:background .3s,border-color .3s;background:transparent}
+nav.scrolled{background:rgba(9,8,10,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;font-weight:500;letter-spacing:.04em;color:var(--gold-b);display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:28px;height:28px;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);transition:color .2s}
+.nav-links a:hover{color:var(--fg)}
+.nav-cta{background:var(--gold) !important;color:var(--bg) !important;padding:.45rem 1.1rem !important;border-radius:2px;font-weight:500 !important;transition:background .2s !important}
+.nav-cta:hover{background:var(--gold-b) !important}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer}
+.nav-burger span{display:block;width:22px;height:1.5px;background:var(--fg-dim);border-radius:1px;transition:transform .3s,opacity .3s}
 
-    body::after {
-      content: '';
-      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-      opacity: 0.18;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    }
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;text-align:center;padding:100px max(24px,env(safe-area-inset-left,0px)) 80px}
+#bubbleCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.vineyard-bg{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hill{position:absolute;left:-5%;right:-5%;bottom:0}
+.hill-1{height:42%;background:linear-gradient(180deg,#1A0A0E 0%,#0F0609 100%);clip-path:ellipse(55% 60% at 50% 100%)}
+.hill-2{height:38%;background:linear-gradient(180deg,#150C10 0%,#0A0507 100%);clip-path:ellipse(60% 65% at 35% 100%)}
+.hill-3{height:34%;background:linear-gradient(180deg,#200D15 0%,#120609 100%);clip-path:ellipse(55% 70% at 70% 100%)}
+.hill-4{height:24%;background:linear-gradient(180deg,#2A1020 0%,#1A0812 100%);clip-path:ellipse(70% 55% at 50% 100%)}
+.vine-rows{position:absolute;left:-5%;right:-5%;bottom:0;height:42%;z-index:2;pointer-events:none;clip-path:ellipse(55% 60% at 50% 100%);overflow:hidden}
+.vine-row{position:absolute;left:0;right:0;height:1px;background:rgba(184,134,11,.07)}
+.winery-silhouette{position:absolute;bottom:0;left:50%;transform:translateX(-50%);z-index:3;pointer-events:none;width:min(600px,95vw);opacity:.3}
+.hero-glass-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:none;width:min(500px,80vw);opacity:.04}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(184,134,11,.12) 0%,transparent 70%);z-index:2;pointer-events:none}
+.hero-content{position:relative;z-index:10;max-width:760px;margin:0 auto}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem;display:flex;align-items:center;justify-content:center;gap:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:32px;height:1px;background:var(--gold);opacity:.5}
+.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.8rem,7vw,5.2rem);font-weight:300;line-height:1.08;letter-spacing:.01em;color:var(--cream);text-wrap:balance;margin-bottom:1.5rem}
+.hero-title em{font-style:italic;color:var(--gold-b)}
+.hero-subtitle{font-size:clamp(.9rem,2.5vw,1.1rem);color:var(--fg-dim);max-width:520px;margin:0 auto 2.4rem;line-height:1.7}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+.btn-primary{background:var(--gold);color:var(--bg);padding:.85rem 2rem;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;transition:background .2s,transform .15s;display:inline-block}
+.btn-primary:hover{background:var(--gold-b);transform:translateY(-1px)}
+.btn-ghost{border:1px solid rgba(184,134,11,.4);color:var(--gold-b);padding:.85rem 2rem;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;transition:border-color .2s,color .2s,transform .15s;display:inline-block}
+.btn-ghost:hover{border-color:var(--gold-b);color:var(--cream);transform:translateY(-1px)}
+.hero-scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-dim);opacity:.6;animation:bobble 2.4s ease-in-out infinite}
+@keyframes bobble{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
-    /* ── HEADER ── */
-    .site-header {
-      position: sticky; top: 0; z-index: 100;
-      background: #000;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0.75rem 1rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .header-logo { display: flex; align-items: center; }
-    .logo-sommelier { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; color: #fff; }
-    .logo-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.25); margin: 0 0.45rem; }
-    .logo-rd { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--gold); letter-spacing: 0.1em; }
-    .header-right { display: flex; align-items: center; gap: 0.65rem; }
-    .btn-acceso {
-      padding: 0.28rem 0.9rem; border: 1px solid rgba(255,255,255,0.45);
-      border-radius: 3px; background: transparent; color: #fff;
-      font-size: 0.75rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
-      transition: all 0.18s;
-    }
-    .btn-acceso:hover { background: #fff; color: #000; }
-    .btn-hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 4px; }
-    .btn-hamburger span { display: block; width: 22px; height: 1.5px; background: #fff; }
+/* SHARED */
+section{padding:90px max(24px,env(safe-area-inset-left,0px))}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem;display:flex;align-items:center;gap:.8rem}
+.section-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--gold);opacity:.6}
+.section-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:300;line-height:1.15;color:var(--cream);text-wrap:balance;margin-bottom:1.2rem}
+.section-title em{font-style:italic;color:var(--gold-b)}
+.section-lead{font-size:1rem;color:var(--fg-dim);max-width:560px;line-height:1.75;margin-bottom:3rem}
+.divider{width:100%;border:none;border-top:1px solid var(--border);margin:0}
 
-    /* ── NAV OVERLAY ── */
-    .nav-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: #000;
-      transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column;
-    }
-    .nav-overlay.open { transform: translateX(0); }
-    .nav-overlay-top { display: flex; justify-content: flex-end; padding: 0.85rem 1rem; border-bottom: 1px solid #0a0a0a; }
-    .nav-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; line-height: 1; }
-    .nav-links { flex: 1; }
-    .nav-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.95rem 1.2rem; font-size: 1rem; color: #fff;
-      border-bottom: 1px solid #080808; cursor: pointer; text-decoration: none;
-      transition: background 0.15s;
-    }
-    .nav-item:hover { background: #0a0a0a; }
-    .nav-item.current { color: var(--text-dim); }
-    .nav-chevron { color: #444; }
-    .nav-search { display: flex; align-items: center; gap: 0.7rem; padding: 0.95rem 1.2rem; color: #666; font-size: 0.9rem; border-bottom: 1px solid #080808; cursor: pointer; }
-    .nav-lang-section { padding: 1.2rem 1.2rem 2.5rem; border-top: 1px solid #0d0d0d; }
-    .nav-lang-label { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.55rem; }
-    .lang-toggle { display: flex; }
-    .lang-btn { padding: 0.28rem 0.8rem; background: #1a1a1a; color: #aaa; border: none; cursor: pointer; font-size: 0.7rem; font-family: 'DM Mono', monospace; }
-    .lang-btn.active { background: #fff; color: #000; font-weight: 500; }
+/* OFRECEMOS */
+#ofrecemos{background:var(--bg2)}
+.offer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5px;background:var(--border);border:1px solid var(--border)}
+.offer-card{background:var(--bg2);padding:2rem 1.6rem;display:flex;flex-direction:column;gap:1rem;transition:background .25s}
+.offer-card:hover{background:var(--bg3)}
+.offer-icon{width:44px;height:44px;background:var(--gold-pale);border:1px solid rgba(184,134,11,.25);border-radius:2px;display:flex;align-items:center;justify-content:center}
+.offer-icon svg{width:22px;height:22px}
+.offer-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.offer-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:400;color:var(--cream);line-height:1.25}
+.offer-desc{font-size:.84rem;color:var(--fg-dim);line-height:1.7;flex:1}
+.offer-link{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.4rem;transition:gap .2s}
+.offer-card:hover .offer-link{gap:.7rem}
 
-    /* ── FILTER PANEL ── */
-    .filter-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #060606; }
-    .filter-panel.open { max-height: 120px; }
-    .filter-inner { padding: 0.75rem 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .fchip {
-      padding: 0.28rem 0.75rem; border: 1px solid #252525; border-radius: 20px;
-      font-size: 0.68rem; color: #777; cursor: pointer; background: none;
-      font-family: 'DM Sans', sans-serif; transition: all 0.18s;
-    }
-    .fchip:hover, .fchip.on { border-color: var(--gold); color: var(--gold); background: rgba(184,134,11,0.07); }
+/* MODULOS */
+#modulos{background:var(--bg)}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3.5rem}
+.module-card{background:var(--bg);padding:2.4rem 1.8rem;display:flex;flex-direction:column;gap:.8rem;position:relative;overflow:hidden;transition:background .25s}
+.module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-color,var(--gold))}
+.module-card:hover{background:var(--bg2)}
+.module-num{font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:400;color:rgba(255,255,255,.05);line-height:1;position:absolute;top:1.2rem;right:1.4rem}
+.module-badge{display:inline-block;padding:.3rem .7rem;background:var(--accent-pale,var(--gold-pale));border:1px solid var(--accent-color,var(--gold));font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent-color,var(--gold));border-radius:1px;width:fit-content}
+.module-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.7rem;font-weight:300;color:var(--cream);line-height:1.1}
+.module-desc{font-size:.83rem;color:var(--fg-dim);line-height:1.65}
+.module-count{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent-color,var(--gold));margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,.05)}
+.module-cta{margin-top:.4rem;display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-color,var(--gold));transition:gap .2s}
+.module-card:hover .module-cta{gap:.7rem}
 
-    /* ── PAGE TITLE ── */
-    .page-title-bar { padding: 1.4rem 1rem 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
-    .page-h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.65rem, 7.5vw, 2.2rem); font-weight: 700; color: #fff; line-height: 1.12; }
-    .btn-filtros { display: flex; align-items: center; gap: 0.35rem; background: none; border: none; color: #fff; cursor: pointer; font-size: 0.78rem; font-family: 'DM Sans', sans-serif; padding: 0; white-space: nowrap; margin-top: 0.5rem; flex-shrink: 0; }
+/* ACADEMIA */
+#academia{background:var(--bg2);position:relative;overflow:hidden}
+.academia-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.academia-quote{border-left:2px solid var(--gold);padding:1rem 1.4rem;margin:2rem 0;background:var(--gold-pale);border-radius:0 2px 2px 0}
+.academia-quote p{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;font-style:italic;font-weight:300;color:var(--cream);line-height:1.5}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2rem}
+.stat-cell{background:var(--bg2);padding:1.4rem;display:flex;flex-direction:column;gap:.3rem}
+.stat-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;font-weight:300;color:var(--gold-b);line-height:1}
+.stat-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim)}
+.academia-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:420px}
 
-    /* ── SHOW BAR ── */
-    .show-bar { padding: 0.6rem 1rem 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
-    .show-label { font-size: 0.78rem; color: #888; }
-    .show-select {
-      appearance: none; -webkit-appearance: none;
-      background: transparent; border: 1px solid #333; color: #fff;
-      padding: 0.18rem 1.5rem 0.18rem 0.5rem; font-size: 0.78rem; border-radius: 2px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 0.4rem center;
-    }
-    .show-select option { background: #000; }
+/* REGIONES */
+#regiones{background:var(--bg)}
+.region-stripe{margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0}
+.region-item{padding:1.6rem 1.2rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.region-flag{font-size:1.6rem;margin-bottom:.5rem}
+.region-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;color:var(--cream);margin-bottom:.3rem}
+.region-grapes{font-size:.75rem;color:var(--fg-dim)}
+.region-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
+.region-tag{padding:.4rem 1rem;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim);border-radius:1px;transition:border-color .2s,color .2s}
+.region-tag:hover{border-color:var(--gold);color:var(--gold)}
 
-    /* ── MODULE DIVIDER ── */
-    .modulo-div {
-      padding: 0.45rem 1rem;
-      font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.16em;
-      color: var(--gold); text-transform: uppercase;
-      background: #000; border-bottom: 1px solid #0c0c0c; margin-top: 0.75rem;
-    }
-    .modulo-div:first-child { margin-top: 0; }
+/* CTA */
+#cta-section{background:linear-gradient(135deg,#2A0A14 0%,#1A0520 50%,#0F0A05 100%);text-align:center;position:relative;overflow:hidden}
+#cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(184,134,11,.08) 0%,transparent 70%);pointer-events:none}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.cta-actions{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
 
-    /* ── COURSE CARD ── */
-    .course-card { display: block; border-bottom: 1px solid #0d0d0d; cursor: pointer; transition: filter 0.2s; }
-    .course-card:hover { filter: brightness(1.08); }
+/* FOOTER */
+footer{background:#050406;border-top:1px solid var(--border);padding:3rem max(24px,env(safe-area-inset-left,0px))}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-start}
+.footer-brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;color:var(--gold-b);font-weight:500;letter-spacing:.04em}
+.footer-tagline{font-size:.78rem;color:var(--fg-dim);margin-top:.4rem;max-width:220px}
+.footer-links{display:flex;flex-wrap:wrap;gap:1.5rem;list-style:none}
+.footer-links a{font-size:.78rem;color:var(--fg-dim);transition:color .2s;letter-spacing:.05em}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(154,142,133,.4);letter-spacing:.08em;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(184,134,11,.07)}
 
-    .cimg { position: relative; height: 195px; overflow: hidden; }
-    .cimg-bg { width: 100%; height: 100%; position: relative; }
-    .cimg-land { position: absolute; bottom: 0; left: 0; right: 0; height: 55%; }
-    .cimg-glow { position: absolute; inset: 0; }
-    .cbrand { position: absolute; bottom: 0; left: 0; display: flex; align-items: stretch; }
-    .cbrand-logo { background: #000; padding: 0.3rem 0.5rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic; font-size: 1.25rem; color: var(--gold-bright); line-height: 1; display: flex; align-items: center; }
-    .cbrand-name { padding: 0.3rem 0.65rem; background: rgba(0,0,0,0.62); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; color: #fff; line-height: 1; display: flex; align-items: center; }
-
-    .cinfo { padding: 0.75rem 1rem 1.05rem; background: #000; }
-    .clevel { display: flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; color: var(--text-dim); margin-bottom: 0.35rem; font-family: 'DM Sans', sans-serif; }
-    .ctitle { font-size: 0.97rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem; line-height: 1.3; }
-    .cstars { display: flex; gap: 2px; }
-    .cstars .s { font-size: 1rem; }
-    .cstars .s.on { color: var(--gold); }
-    .cstars .s.off { color: #1e1e1e; }
-
-    /* ── COURSE DETAIL OVERLAY ── */
-    .detail-overlay {
-      position: fixed; inset: 0; z-index: 300;
-      background: #000;
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-    }
-    .detail-overlay.open { transform: translateX(0); }
-
-    .detail-header {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
-      display: flex; align-items: center; gap: 0.8rem;
-      padding: 0 1rem;
-      height: 58px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: #000;
-    }
-    .detail-back {
-      background: none; border: 1px solid rgba(255,255,255,0.15);
-      color: #fff; border-radius: 50%;
-      width: 34px; height: 34px; min-width: 34px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-    .detail-back:hover { border-color: var(--gold); color: var(--gold); }
-    .detail-header-info { flex: 1; min-width: 0; }
-    .detail-header-titulo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem; color: #fff;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .detail-header-meta { font-family: 'DM Mono', monospace; font-size: 0.56rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
-
-    .detail-body {
-      position: absolute; top: 58px; bottom: 72px; left: 0; right: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Hero de detalle */
-    .detail-hero { position: relative; height: 220px; overflow: hidden; }
-    .detail-hero-bg { width: 100%; height: 100%; }
-    .detail-hero-land { position: absolute; bottom: 0; left: 0; right: 0; height: 55%; }
-    .detail-hero-glow { position: absolute; inset: 0; }
-    .detail-hero-brand { position: absolute; bottom: 0; left: 0; display: flex; align-items: stretch; }
-    .detail-hero-logo { background: #000; padding: 0.35rem 0.6rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic; font-size: 1.4rem; color: var(--gold-bright); display: flex; align-items: center; }
-    .detail-hero-name { padding: 0.35rem 0.75rem; background: rgba(0,0,0,0.65); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; color: #fff; display: flex; align-items: center; }
-    .detail-hero-badge {
-      position: absolute; top: 1rem; right: 1rem;
-      background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 4px; padding: 0.25rem 0.6rem;
-      font-family: 'DM Mono', monospace; font-size: 0.58rem;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
-    }
-
-    /* Contenido del detalle */
-    .detail-content { padding: 1.4rem 1rem; }
-
-    .detail-titulo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.65rem; font-weight: 400;
-      color: #fff; line-height: 1.2; margin-bottom: 0.3rem;
-    }
-    .detail-subtitulo {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.6rem; letter-spacing: 0.12em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 1rem;
-    }
-
-    .detail-stars-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.2rem; }
-    .detail-stars { display: flex; gap: 2px; }
-    .detail-stars .s { font-size: 1.1rem; }
-    .detail-stars .s.on { color: var(--gold); }
-    .detail-stars .s.off { color: #222; }
-    .detail-rating-count { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--text-dim); }
-
-    .detail-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.4rem; }
-    .detail-chip {
-      padding: 0.25rem 0.65rem;
-      border: 1px solid rgba(255,255,255,0.12); border-radius: 3px;
-      font-family: 'DM Mono', monospace; font-size: 0.58rem;
-      letter-spacing: 0.06em; color: #aaa;
-    }
-
-    .detail-seccion-titulo {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.58rem; letter-spacing: 0.14em;
-      color: var(--gold); text-transform: uppercase;
-      margin: 1.5rem 0 0.75rem;
-      border-top: 1px solid #111; padding-top: 1.2rem;
-    }
-    .detail-seccion-titulo:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
-
-    .detail-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem; line-height: 1.75;
-      color: #ccc;
-    }
-
-    .detail-objetivo {
-      display: flex; gap: 0.7rem; align-items: flex-start;
-      padding: 0.55rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.84rem; color: #bbb; line-height: 1.5;
-    }
-    .detail-objetivo::before { content: '✦'; color: var(--gold); font-size: 0.55rem; margin-top: 0.35rem; flex-shrink: 0; }
-    .detail-objetivo:last-child { border-bottom: none; }
-
-    .detail-temario { display: flex; flex-direction: column; gap: 0; }
-    .detail-tema {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.7rem 0; border-bottom: 1px solid #0f0f0f;
-    }
-    .detail-tema:last-child { border-bottom: none; }
-    .detail-tema-num {
-      width: 28px; height: 28px; border-radius: 4px;
-      border: 1px solid #1e1e1e;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'DM Mono', monospace; font-size: 0.6rem;
-      color: var(--text-dim); flex-shrink: 0;
-    }
-    .detail-tema-titulo { font-size: 0.84rem; color: #ccc; line-height: 1.35; }
-    .detail-tema-dur { font-family: 'DM Mono', monospace; font-size: 0.56rem; color: var(--text-dim); margin-top: 0.1rem; }
-
-    .detail-info-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 0.6rem; margin-bottom: 0.5rem;
-    }
-    .detail-info-box {
-      background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 6px;
-      padding: 0.75rem;
-    }
-    .detail-info-box .lbl { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.25rem; }
-    .detail-info-box .val { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: #fff; }
-
-    .detail-cta {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 72px; padding: 1rem;
-      background: #000;
-      border-top: 1px solid #111; z-index: 2;
-    }
-    .btn-comenzar {
-      display: block; width: 100%; padding: 0.9rem;
-      background: linear-gradient(135deg, var(--burgundy), #a0002a);
-      border: none; border-radius: 6px;
-      color: #fff; font-family: 'DM Mono', monospace;
-      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-      cursor: pointer; transition: opacity 0.2s;
-    }
-    .btn-comenzar:hover { opacity: 0.88; }
-
-    /* ── NO RESULTS ── */
-    #no-results { display: none; padding: 3.5rem 1.5rem; text-align: center; color: #444; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; }
-  </style>
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 max(16px,env(safe-area-inset-left,0px))}
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:64px 0 0 0;background:rgba(9,8,10,.97);backdrop-filter:blur(16px);padding:2rem 1.5rem;gap:1.8rem;align-items:flex-start;z-index:200}
+  .nav-links.open a{font-size:.9rem}
+  .nav-burger{display:flex}
+  section{padding:70px max(16px,env(safe-area-inset-left,0px))}
+  .academia-layout{grid-template-columns:1fr;gap:2.5rem}
+  .academia-visual{min-height:260px}
+  .hero-scroll-hint{display:none}
+  .footer-inner{flex-direction:column;gap:1.5rem}
+}
+</style>
 </head>
 <body>
 
-<!-- NAV OVERLAY -->
-<div class="nav-overlay" id="navOverlay">
-  <div class="nav-overlay-top">
-    <button class="nav-close" onclick="closeNav()">&#10005;</button>
-  </div>
-  <div class="nav-links">
-    <a class="nav-item" href="index.html">Inicio</a>
-    <a class="nav-item current" href="#">Cursos</a>
-    <a class="nav-item" href="index.html">El Maestro AI</a>
-    <a class="nav-item" href="index.html">Mapa de Vinos <span class="nav-chevron">&#8250;</span></a>
-    <a class="nav-item" href="index.html">Ayuda <span class="nav-chevron">&#8250;</span></a>
-    <div class="nav-search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Buscar
-    </div>
-  </div>
-  <div class="nav-lang-section">
-    <div class="nav-lang-label">Idioma</div>
-    <div class="lang-toggle">
-      <button class="lang-btn active">ES</button>
-      <button class="lang-btn">EN</button>
-    </div>
-  </div>
-</div>
-
-<!-- COURSE DETAIL OVERLAY -->
-<div class="detail-overlay" id="detailOverlay">
-  <div class="detail-header">
-    <button class="detail-back" onclick="cerrarDetalle()">&#8592;</button>
-    <div class="detail-header-info">
-      <div class="detail-header-titulo" id="det-header-titulo">Cargando...</div>
-      <div class="detail-header-meta" id="det-header-meta"></div>
-    </div>
-  </div>
-  <div class="detail-body" id="det-body"></div>
-  <div class="detail-cta">
-    <button class="btn-comenzar" onclick="window.location.href='index.html'">✦ Comenzar este curso</button>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header class="site-header">
-  <div class="header-logo">
-    <span class="logo-sommelier">El Sommelier</span>
-    <div class="logo-sep"></div>
-    <span class="logo-rd">RD</span>
-  </div>
-  <div class="header-right">
-    <button class="btn-acceso" onclick="window.location.href='index.html'">Acceso</button>
-    <button class="btn-hamburger" onclick="openNav()">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<!-- FILTER PANEL -->
-<div class="filter-panel" id="filterPanel">
-  <div class="filter-inner">
-    <button class="fchip on" onclick="setFilter(this,'todos')">Todos</button>
-    <button class="fchip" onclick="setFilter(this,'bronce')">🥉 Nivel 1</button>
-    <button class="fchip" onclick="setFilter(this,'plata')">🥈 Nivel 2</button>
-    <button class="fchip" onclick="setFilter(this,'oro')">🥇 Nivel 3</button>
-    <button class="fchip" onclick="setFilter(this,'diplomado')">🎓 Diplomado</button>
-  </div>
-</div>
-
-<!-- PAGE TITLE -->
-<div class="page-title-bar">
-  <h1 class="page-h1">Cursos gratuitos de<br>El Sommelier RD</h1>
-  <button class="btn-filtros" onclick="toggleFilter()">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
-    Filtros
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="13" stroke="#B8860B" stroke-width="1"/>
+      <path d="M14 4 C14 4 10 8 10 13 C10 16 11.5 18 13 19 L13 24" stroke="#E8C840" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M14 4 C14 4 18 8 18 13 C18 16 16.5 18 15 19 L15 24" stroke="#E8C840" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M13 24 L15 24" stroke="#B8860B" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M11.5 19.5 C11.5 19.5 14 21 16.5 19.5" stroke="#B8860B" stroke-width="0.8"/>
+    </svg>
+    El Sommelier RD
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#ofrecemos">Lo que ofrecemos</a></li>
+    <li><a href="#modulos">Módulos</a></li>
+    <li><a href="#academia">La Academia</a></li>
+    <li><a href="#regiones">Regiones</a></li>
+    <li><a href="cursos.html" class="nav-cta">Ver cursos</a></li>
+  </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Menú">
+    <span></span><span></span><span></span>
   </button>
-</div>
+</nav>
 
-<!-- SHOW N -->
-<div class="show-bar">
-  <span class="show-label">Mostrar:</span>
-  <select class="show-select" id="showSelect" onchange="render()">
-    <option value="10">10</option>
-    <option value="20">20</option>
-    <option value="30" selected>30</option>
-    <option value="9999">Todos</option>
-  </select>
-</div>
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <canvas id="bubbleCanvas"></canvas>
+  <div class="vineyard-bg">
+    <div class="hill hill-1"></div>
+    <div class="hill hill-2"></div>
+    <div class="hill hill-3"></div>
+    <div class="hill hill-4"></div>
+    <div class="vine-rows" id="vineRows"></div>
+    <div class="winery-silhouette">
+      <svg viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="210" y="80" width="180" height="120" fill="#800020" opacity="0.6"/>
+        <polygon points="195,80 390,80 300,30" fill="#5A0016" opacity="0.7"/>
+        <rect x="175" y="55" width="50" height="145" fill="#6A0018" opacity="0.5"/>
+        <rect x="185" y="40" width="30" height="20" fill="#5A0016" opacity="0.5"/>
+        <rect x="375" y="65" width="45" height="135" fill="#6A0018" opacity="0.5"/>
+        <rect x="382" y="50" width="30" height="20" fill="#5A0016" opacity="0.5"/>
+        <rect x="240" y="100" width="30" height="40" fill="#B8860B" opacity="0.2" rx="15"/>
+        <rect x="285" y="100" width="30" height="40" fill="#B8860B" opacity="0.2" rx="15"/>
+        <rect x="330" y="100" width="30" height="40" fill="#B8860B" opacity="0.2" rx="15"/>
+        <rect x="276" y="145" width="48" height="55" fill="#2A0A10" opacity="0.9" rx="24 24 0 0"/>
+        <rect x="50" y="110" width="80" height="90" fill="#400010" opacity="0.35"/>
+        <polygon points="40,110 140,110 90,80" fill="#300008" opacity="0.4"/>
+        <rect x="470" y="120" width="90" height="80" fill="#400010" opacity="0.35"/>
+        <polygon points="460,120 570,120 515,88" fill="#300008" opacity="0.4"/>
+        <ellipse cx="130" cy="130" rx="10" ry="45" fill="#200810" opacity="0.5"/>
+        <ellipse cx="160" cy="140" rx="8" ry="35" fill="#200810" opacity="0.5"/>
+        <ellipse cx="440" cy="135" rx="8" ry="38" fill="#200810" opacity="0.5"/>
+        <ellipse cx="465" cy="145" rx="7" ry="30" fill="#200810" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+  <svg class="hero-glass-bg" viewBox="0 0 200 320" fill="none">
+    <path d="M60 10 L140 10 L120 160 C120 160 118 180 100 190 C82 180 80 160 80 160 Z" fill="white"/>
+    <rect x="94" y="190" width="12" height="90" fill="white"/>
+    <rect x="70" y="278" width="60" height="8" rx="4" fill="white"/>
+  </svg>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Academia del Vino</p>
+    <h1 class="hero-title">El <em>Arte del Vino</em><br>en el Caribe</h1>
+    <p class="hero-subtitle">Domina la cata, la viticultura y las grandes regiones del mundo. Cursos gratuitos, diplomado oficial y herramientas para el sommelier moderno.</p>
+    <div class="hero-actions">
+      <a href="#ofrecemos" class="btn-primary">Explorar la academia</a>
+      <a href="cursos.html" class="btn-ghost">Ver todos los cursos</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Descubrir</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none"><rect x="1" y="1" width="12" height="18" rx="6" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="6" r="2" fill="currentColor"/></svg>
+  </div>
+</section>
 
-<!-- COURSES LIST -->
-<div id="coursesWrap"></div>
-<div id="no-results">No se encontraron cursos.</div>
+<hr class="divider">
+
+<!-- LO QUE OFRECEMOS -->
+<section id="ofrecemos">
+  <div class="section-inner">
+    <p class="section-eyebrow">Propuesta de valor</p>
+    <h2 class="section-title">Todo lo que<br><em>ofrece la academia</em></h2>
+    <p class="section-lead">Un ecosistema completo para tu formación enológica: desde la primera copa hasta el diplomado oficial.</p>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <div class="offer-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke="#E8C840" stroke-width="1.4"><path d="M6 2h10l2 7a7 7 0 0 1-14 0Z"/><line x1="11" y1="16" x2="11" y2="21"/><line x1="7" y1="21" x2="15" y2="21"/></svg>
+        </div>
+        <span class="offer-label">Cursos gratuitos</span>
+        <h3 class="offer-title">18 Cursos de Acceso Libre</h3>
+        <p class="offer-desc">Desde introducción a la viticultura hasta catas avanzadas de Borgoña y Burdeos. Sin costo, sin restricciones.</p>
+        <a href="cursos.html" class="offer-link">Ver catálogo <span>→</span></a>
+      </div>
+      <div class="offer-card">
+        <div class="offer-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke="#E8C840" stroke-width="1.4"><rect x="3" y="3" width="16" height="16" rx="2"/><path d="M7 8h8M7 12h5M7 16h3"/></svg>
+        </div>
+        <span class="offer-label">Diplomado oficial</span>
+        <h3 class="offer-title">Certificación Profesional</h3>
+        <p class="offer-desc">Programa completo de Sommelier Profesional con mención del Instituto Nacional de Enología del Caribe.</p>
+        <a href="cursos.html" class="offer-link">Ver diplomado <span>→</span></a>
+      </div>
+      <div class="offer-card">
+        <div class="offer-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke="#E8C840" stroke-width="1.4"><circle cx="11" cy="11" r="9"/><path d="M11 2a9 9 0 0 1 0 18"/><path d="M2 11h18"/><path d="M11 2C8 6 7 9 7 11s1 5 4 9"/></svg>
+        </div>
+        <span class="offer-label">Mapa vinícola</span>
+        <h3 class="offer-title">Atlas de Regiones Vinícolas</h3>
+        <p class="offer-desc">Explora más de 25 regiones vitivinícolas del mundo con guías de terroir, uvas autóctonas y productores clave.</p>
+        <a href="#regiones" class="offer-link">Explorar regiones <span>→</span></a>
+      </div>
+      <div class="offer-card">
+        <div class="offer-icon">
+          <svg viewBox="0 0 22 22" fill="none" stroke="#E8C840" stroke-width="1.4"><circle cx="11" cy="11" r="9"/><path d="m11 8 1.5 3H9.5L11 8Z" fill="#E8C840" stroke="none"/><circle cx="11" cy="14" r="1" fill="#E8C840" stroke="none"/></svg>
+        </div>
+        <span class="offer-label">IA enológica</span>
+        <h3 class="offer-title">El Maestro — Asistente IA</h3>
+        <p class="offer-desc">Tu sommelier virtual. Consulta maridajes, aprende sobre vendimias y obtén recomendaciones personalizadas al instante.</p>
+        <span class="offer-link" style="opacity:.4;cursor:default;">Próximamente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MÓDULOS -->
+<section id="modulos">
+  <div class="section-inner">
+    <p class="section-eyebrow">Estructura académica</p>
+    <h2 class="section-title">Cuatro módulos,<br><em>un solo camino</em></h2>
+    <p class="section-lead">Cada nivel profundiza el anterior. Avanza a tu ritmo desde los fundamentos hasta la maestría en enología.</p>
+    <div class="modules-grid">
+      <div class="module-card" style="--accent-color:#CD7F32;--accent-pale:rgba(205,127,50,0.1)">
+        <span class="module-num">01</span>
+        <span class="module-badge">Bronce</span>
+        <h3 class="module-name">Fundamentos del Vino</h3>
+        <p class="module-desc">La base de todo sommelier. Viticultura, vinificación, cata básica y las uvas del mundo.</p>
+        <div class="module-count">6 cursos · Nivel inicial</div>
+        <a href="cursos.html" class="module-cta">Comenzar <span>→</span></a>
+      </div>
+      <div class="module-card" style="--accent-color:#C0C0C0;--accent-pale:rgba(192,192,192,0.08)">
+        <span class="module-num">02</span>
+        <span class="module-badge">Plata</span>
+        <h3 class="module-name">Regiones y Estilos</h3>
+        <p class="module-desc">Francia, Italia, España, el Nuevo Mundo. Terroir, AOC y los grandes vinos clásicos.</p>
+        <div class="module-count">6 cursos · Nivel intermedio</div>
+        <a href="cursos.html" class="module-cta">Explorar <span>→</span></a>
+      </div>
+      <div class="module-card" style="--accent-color:#FFD700;--accent-pale:rgba(255,215,0,0.08)">
+        <span class="module-num">03</span>
+        <span class="module-badge">Oro</span>
+        <h3 class="module-name">Maestría y Servicio</h3>
+        <p class="module-desc">Espumosos, destilados, maridaje avanzado y gestión de bodegas. El perfil del sommelier profesional.</p>
+        <div class="module-count">4 cursos · Nivel avanzado</div>
+        <a href="cursos.html" class="module-cta">Avanzar <span>→</span></a>
+      </div>
+      <div class="module-card" style="--accent-color:#B8860B;--accent-pale:rgba(184,134,11,0.12)">
+        <span class="module-num">04</span>
+        <span class="module-badge">Diplomado</span>
+        <h3 class="module-name">Certificación Oficial</h3>
+        <p class="module-desc">El programa más completo. Negocio del vino, comunicación enológica y certificación profesional.</p>
+        <div class="module-count">3 cursos · Certificación oficial</div>
+        <a href="cursos.html" class="module-cta">Certificarse <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LA ACADEMIA -->
+<section id="academia">
+  <div class="section-inner">
+    <div class="academia-layout">
+      <div class="academia-text">
+        <p class="section-eyebrow">La academia</p>
+        <h2 class="section-title">Nacida en<br><em>el Caribe,</em><br>con vocación global</h2>
+        <p class="section-lead">El Sommelier RD es la primera plataforma de educación enológica desarrollada íntegramente para el Caribe hispanohablante. Combinamos rigor académico europeo con la calidez y el contexto de nuestra región.</p>
+        <div class="academia-quote">
+          <p>"El vino no es solo una bebida; es un idioma universal que habla de tierra, clima y manos humanas."</p>
+        </div>
+        <p class="section-lead" style="margin-bottom:0">Nuestros contenidos cubren desde las appellations de Burdeos hasta los vinos emergentes del Caribe y Sudamérica, siempre con perspectiva local.</p>
+        <div class="stats-grid">
+          <div class="stat-cell"><span class="stat-num">18</span><span class="stat-label">Cursos gratuitos</span></div>
+          <div class="stat-cell"><span class="stat-num">4</span><span class="stat-label">Niveles académicos</span></div>
+          <div class="stat-cell"><span class="stat-num">25+</span><span class="stat-label">Regiones vinícolas</span></div>
+          <div class="stat-cell"><span class="stat-num">1</span><span class="stat-label">Certificación oficial</span></div>
+        </div>
+      </div>
+      <div class="academia-visual">
+        <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:min(300px,90%);height:auto">
+          <!-- Wine bottle -->
+          <rect x="118" y="8" width="22" height="28" rx="3" fill="#1A0A12" stroke="#B8860B" stroke-width="0.8"/>
+          <path d="M110 36 C108 48 106 60 106 80 L106 300 C106 310 112 318 128 318 L172 318 C188 318 194 310 194 300 L194 80 C194 60 192 48 190 36 Z" fill="#1A0A12" stroke="#B8860B" stroke-width="0.8"/>
+          <path d="M108 80 L192 80" stroke="#B8860B" stroke-width="0.5" opacity="0.5"/>
+          <rect x="116" y="130" width="68" height="90" rx="3" fill="#2A0C18" stroke="#B8860B" stroke-width="0.6" opacity="0.9"/>
+          <text x="150" y="162" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#E8C840" font-style="italic">El Sommelier</text>
+          <text x="150" y="175" text-anchor="middle" font-family="Georgia,serif" font-size="6" fill="#B8860B" letter-spacing="2">RD</text>
+          <line x1="126" y1="181" x2="174" y2="181" stroke="#B8860B" stroke-width="0.5"/>
+          <text x="150" y="193" text-anchor="middle" font-family="monospace" font-size="5" fill="#9A8E85">ACADEMIA DEL VINO</text>
+          <rect x="107" y="96" width="86" height="130" rx="2" fill="#800020" opacity="0.3"/>
+          <!-- Left glass -->
+          <path d="M38 300 L62 300 C62 300 60 240 58 200 C56 160 78 130 78 100 C78 80 70 65 60 60 L50 60 C40 65 32 80 32 100 C32 130 52 160 50 200 C48 240 46 300 46 300 Z" fill="#2A0A14" stroke="#B8860B" stroke-width="0.7" opacity="0.9"/>
+          <path d="M38 300 L62 300" stroke="#B8860B" stroke-width="1.2"/>
+          <path d="M43 300 L50 330 L57 300" stroke="#B8860B" stroke-width="0.7"/>
+          <line x1="38" y1="330" x2="62" y2="330" stroke="#B8860B" stroke-width="1"/>
+          <path d="M34 108 C34 108 32 160 50 190 C68 160 66 108 66 108 Z" fill="#800020" opacity="0.4"/>
+          <!-- Right glass -->
+          <path d="M228 280 L252 280 C252 280 250 220 248 180 C246 140 268 110 268 80 C268 60 260 45 250 40 L240 40 C230 45 222 60 222 80 C222 110 242 140 240 180 C238 220 236 280 236 280 Z" fill="#2A0A14" stroke="#B8860B" stroke-width="0.7" opacity="0.9"/>
+          <path d="M228 280 L252 280" stroke="#B8860B" stroke-width="1.2"/>
+          <path d="M233 280 L240 310 L247 280" stroke="#B8860B" stroke-width="0.7"/>
+          <line x1="228" y1="310" x2="252" y2="310" stroke="#B8860B" stroke-width="1"/>
+          <path d="M224 88 C224 88 222 155 240 185 C258 155 256 88 256 88 Z" fill="#800020" opacity="0.5"/>
+          <!-- Grape cluster -->
+          <circle cx="265" cy="40" r="6" fill="#400015" opacity="0.7"/>
+          <circle cx="275" cy="35" r="6" fill="#500018" opacity="0.7"/>
+          <circle cx="285" cy="40" r="6" fill="#400015" opacity="0.7"/>
+          <circle cx="270" cy="48" r="6" fill="#500018" opacity="0.7"/>
+          <circle cx="280" cy="48" r="6" fill="#400015" opacity="0.7"/>
+          <circle cx="275" cy="56" r="6" fill="#500018" opacity="0.7"/>
+          <line x1="275" y1="28" x2="275" y2="20" stroke="#2A0A10" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REGIONES -->
+<section id="regiones">
+  <div class="section-inner">
+    <p class="section-eyebrow">Mapa vinícola</p>
+    <h2 class="section-title">25+ regiones<br><em>del mundo entero</em></h2>
+    <p class="section-lead">Explora los terroirs que dan forma a los vinos más icónicos del planeta.</p>
+    <div class="region-stripe">
+      <div class="region-item"><div class="region-flag">🇫🇷</div><div class="region-name">Burdeos</div><div class="region-grapes">Cabernet Sauvignon · Merlot</div></div>
+      <div class="region-item"><div class="region-flag">🇫🇷</div><div class="region-name">Borgoña</div><div class="region-grapes">Pinot Noir · Chardonnay</div></div>
+      <div class="region-item"><div class="region-flag">🇮🇹</div><div class="region-name">Toscana</div><div class="region-grapes">Sangiovese · Brunello</div></div>
+      <div class="region-item"><div class="region-flag">🇪🇸</div><div class="region-name">Rioja</div><div class="region-grapes">Tempranillo · Garnacha</div></div>
+      <div class="region-item"><div class="region-flag">🇦🇷</div><div class="region-name">Mendoza</div><div class="region-grapes">Malbec · Bonarda</div></div>
+      <div class="region-item" style="border-right:none"><div class="region-flag">🇨🇱</div><div class="region-name">Valle Central</div><div class="region-grapes">Carménère · Syrah</div></div>
+    </div>
+    <div class="region-tags">
+      <span class="region-tag">Champagne</span><span class="region-tag">Priorat</span><span class="region-tag">Barossa Valley</span><span class="region-tag">Napa Valley</span><span class="region-tag">Douro</span><span class="region-tag">Mosel</span><span class="region-tag">Sicilia</span><span class="region-tag">Marlborough</span><span class="region-tag">Galicia</span><span class="region-tag">Piamonte</span><span class="region-tag">Ródano</span><span class="region-tag">Santorini</span><span class="region-tag">Sudáfrica</span><span class="region-tag">Uruguay</span><span class="region-tag">+ más</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section id="cta-section">
+  <div class="section-inner">
+    <div class="cta-inner">
+      <p class="section-eyebrow" style="justify-content:center">Comienza hoy</p>
+      <h2 class="section-title">Tu viaje por<br><em>el mundo del vino</em><br>empieza aquí</h2>
+      <p class="section-lead" style="margin:0 auto 2.5rem">18 cursos gratuitos. Sin registro obligatorio. Aprende a tu ritmo.</p>
+      <div class="cta-actions">
+        <a href="cursos.html" class="btn-primary">Ver todos los cursos</a>
+        <a href="#modulos" class="btn-ghost">Conocer los módulos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">El Sommelier RD</div>
+      <p class="footer-tagline">La academia del vino del Caribe hispanohablante.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#ofrecemos">Lo que ofrecemos</a></li>
+      <li><a href="#modulos">Módulos</a></li>
+      <li><a href="#academia">La Academia</a></li>
+      <li><a href="#regiones">Regiones</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+    </ul>
+  </div>
+  <div class="footer-copy" style="max-width:1100px;margin:0 auto">© 2024 El Sommelier RD — Academia del Vino</div>
+</footer>
 
 <script>
-const COURSES = [
-  // ── NIVEL 1 · BRONCE ──
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Tasting Essentials — Fundamentos de la Degustación',
-    brand:'Tasting Essentials', stars:5,
-    duracion:'4 horas', lecciones:'8 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#2c0808 0%,#680016 50%,#1a0404 100%)',
-    land:'polygon(0 55%,8% 38%,18% 50%,28% 30%,40% 45%,52% 25%,65% 40%,78% 22%,90% 36%,100% 20%,100% 100%,0 100%)',
-    landC:'rgba(80,0,16,0.55)', glow:'radial-gradient(ellipse 70% 50% at 50% 30%, rgba(180,0,40,0.18) 0%, transparent 70%)',
-    descripcion:'Domina los fundamentos de la cata profesional del vino. Aprenderás a observar el color, percibir los aromas y analizar los sabores como lo hace un sommelier certificado. Indispensable para cualquier amante del vino que quiera ir más allá del simple disfrute.',
-    objetivos:[
-      'Identificar los colores y tonalidades de vinos tintos, blancos y rosados',
-      'Reconocer los aromas primarios, secundarios y terciarios del vino',
-      'Aplicar la metodología SAT de cata sistemática',
-      'Evaluar la estructura tánica, acidez, cuerpo y final en boca',
-      'Redactar una nota de cata profesional',
-    ],
-    temario:[
-      { t:'Introducción a la cata sistemática', d:'35 min' },
-      { t:'El color del vino: lectura visual', d:'25 min' },
-      { t:'Los aromas primarios — frutas y flores', d:'40 min' },
-      { t:'Los aromas secundarios — fermentación', d:'35 min' },
-      { t:'Los aromas terciarios — crianza y botella', d:'45 min' },
-      { t:'Análisis en boca: estructura y equilibrio', d:'40 min' },
-      { t:'La nota de cata: cómo escribirla', d:'30 min' },
-      { t:'Práctica: cata de 3 vinos del Caribe', d:'50 min' },
-    ],
-  },
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Enthusiast — Entusiasta del Vino Dominicano',
-    brand:'Enthusiast', stars:4,
-    duracion:'3 horas', lecciones:'6 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#0c1c0c 0%,#1a3418 50%,#0a1208 100%)',
-    land:'polygon(0 60%,10% 45%,22% 58%,35% 35%,48% 52%,60% 32%,72% 48%,85% 28%,100% 42%,100% 100%,0 100%)',
-    landC:'rgba(10,40,10,0.6)', glow:'radial-gradient(ellipse 60% 40% at 50% 25%, rgba(30,100,20,0.15) 0%, transparent 70%)',
-    descripcion:'Diseñado para el aficionado dominicano que quiere entender el mundo del vino desde su propia cultura. Conectamos el sabor del mofongo, el chivo guisado y el marisqueo con los grandes vinos del mundo, usando referentes que ya conoces.',
-    objetivos:[
-      'Comprender qué es el vino y cómo se produce',
-      'Diferenciar vinos tintos, blancos, rosados y espumosos',
-      'Aprender el vocabulario básico del sommelier',
-      'Descubrir cómo el clima caribeño influye en la elección del vino',
-      'Identificar los mejores vinos para la gastronomía dominicana',
-    ],
-    temario:[
-      { t:'¿Qué es el vino? Del viñedo a la copa', d:'30 min' },
-      { t:'Los 4 grandes estilos: tintos, blancos, rosados, espumosos', d:'35 min' },
-      { t:'El vocabulario del sommelier (sin complicaciones)', d:'25 min' },
-      { t:'El clima del Caribe y cómo elegir el vino correcto', d:'30 min' },
-      { t:'Los vinos que van con nuestra comida dominicana', d:'40 min' },
-      { t:'Tu primera cata: práctica guiada', d:'40 min' },
-    ],
-  },
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Viticultura y el Terroir — Del Viñedo a la Copa',
-    brand:'Viticultura', stars:4,
-    duracion:'3.5 horas', lecciones:'7 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1c1005 0%,#2e1e08 50%,#100a03 100%)',
-    land:'polygon(0 50%,12% 35%,25% 50%,38% 28%,50% 44%,63% 24%,76% 40%,88% 20%,100% 35%,100% 100%,0 100%)',
-    landC:'rgba(60,35,5,0.55)', glow:'radial-gradient(ellipse 65% 45% at 50% 30%, rgba(120,80,10,0.14) 0%, transparent 70%)',
-    descripcion:'Todo gran vino comienza en el suelo. Entiende qué es el terroir — esa combinación mágica de tierra, clima, altitud y mano humana — y comprenderás por qué un Malbec de Mendoza sabe diferente a uno de Cahors, aunque sea la misma uva.',
-    objetivos:[
-      'Entender qué es el terroir y sus cuatro componentes principales',
-      'Conocer los ciclos de la vid: poda, floración, vendimia',
-      'Distinguir entre agricultura convencional, orgánica y biodinámica',
-      'Relacionar el tipo de suelo con el estilo del vino resultante',
-      'Identificar cómo el clima continental, oceánico y mediterráneo define los vinos',
-    ],
-    temario:[
-      { t:'El terroir: suelo, clima, altitud y ser humano', d:'35 min' },
-      { t:'La vid: anatomía y ciclo de vida', d:'30 min' },
-      { t:'Del brote a la vendimia: el año vitícola', d:'30 min' },
-      { t:'Tipos de suelos y su influencia en el vino', d:'40 min' },
-      { t:'Climas vinícolas del mundo', d:'35 min' },
-      { t:'Viticultura orgánica y biodinámica', d:'25 min' },
-      { t:'Cómo leer una etiqueta para entender el terroir', d:'25 min' },
-    ],
-  },
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Las Uvas Nobles del Mundo',
-    brand:'Uvas Nobles', stars:4,
-    duracion:'4 horas', lecciones:'8 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1c0a22 0%,#301248 50%,#100518 100%)',
-    land:'polygon(0 65%,7% 48%,16% 60%,26% 38%,38% 55%,50% 30%,62% 50%,74% 28%,86% 44%,100% 25%,100% 100%,0 100%)',
-    landC:'rgba(50,10,70,0.55)', glow:'radial-gradient(ellipse 60% 45% at 50% 28%, rgba(100,20,160,0.12) 0%, transparent 70%)',
-    descripcion:'Conoce las 18 uvas más importantes del mundo — las que encuentras en las tiendas de Santo Domingo, en los restaurantes de Santiago y en las cartas de los hoteles. Aprende a reconocerlas por su aroma, sabor y procedencia.',
-    objetivos:[
-      'Identificar las 9 uvas tintas fundamentales del mundo',
-      'Reconocer las 9 uvas blancas más importantes',
-      'Asociar cada uva con su región de origen y su estilo característico',
-      'Describir los aromas y sabores típicos de cada varietal',
-      'Identificar uvas por su perfil sensorial en una cata a ciegas',
-    ],
-    temario:[
-      { t:'Cabernet Sauvignon: el rey de los tintos', d:'25 min' },
-      { t:'Merlot, Pinot Noir y Syrah/Shiraz', d:'35 min' },
-      { t:'Malbec, Tempranillo y Sangiovese', d:'30 min' },
-      { t:'Garnacha, Nebbiolo y Carménère', d:'30 min' },
-      { t:'Chardonnay: el blanco del mundo', d:'25 min' },
-      { t:'Sauvignon Blanc, Riesling y Pinot Grigio', d:'30 min' },
-      { t:'Albariño, Gewürztraminer y Viognier', d:'25 min' },
-      { t:'Cata comparativa: 4 uvas en copa', d:'40 min' },
-    ],
-  },
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Regiones Vinícolas del Mundo',
-    brand:'World Regions', stars:5,
-    duracion:'5 horas', lecciones:'10 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#08101c 0%,#102030 50%,#06090f 100%)',
-    land:'polygon(0 55%,5% 45%,15% 55%,28% 30%,42% 48%,56% 25%,68% 42%,80% 20%,92% 38%,100% 22%,100% 100%,0 100%)',
-    landC:'rgba(10,30,60,0.6)', glow:'radial-gradient(ellipse 70% 50% at 50% 30%, rgba(20,80,160,0.12) 0%, transparent 70%)',
-    descripcion:'Un viaje por los viñedos más icónicos del planeta. Desde Burdeos hasta Mendoza, desde la Toscana hasta Marlborough. Aprende qué hace especial a cada región, qué uvas se cultivan y qué estilos de vino producen.',
-    objetivos:[
-      'Ubicar geográficamente las 25 regiones vinícolas más importantes',
-      'Relacionar cada región con sus uvas y estilos característicos',
-      'Comprender por qué el Viejo y el Nuevo Mundo producen vinos tan diferentes',
-      'Leer una etiqueta e identificar el origen del vino',
-      'Recomendar vinos por región según la ocasión',
-    ],
-    temario:[
-      { t:'El Viejo Mundo vs el Nuevo Mundo', d:'30 min' },
-      { t:'Francia: Burdeos, Borgoña y Champagne', d:'40 min' },
-      { t:'Francia: Ródano, Alsacia y Loira', d:'35 min' },
-      { t:'España: Rioja, Ribera del Duero y Priorat', d:'35 min' },
-      { t:'Italia: Toscana, Piamonte y Véneto', d:'35 min' },
-      { t:'Alemania y Austria: los grandes blancos', d:'30 min' },
-      { t:'Argentina y Chile: el Nuevo Mundo latino', d:'35 min' },
-      { t:'California, Oregon y Washington', d:'30 min' },
-      { t:'Australia, Nueva Zelanda y Sudáfrica', d:'30 min' },
-      { t:'El mapa vinícola del Caribe y República Dominicana', d:'30 min' },
-    ],
-  },
-  {
-    nivel:'bronce', lbl:'Nivel 1 · Gratuito',
-    titulo:'Servicio y Temperatura del Vino',
-    brand:'Service & Temp', stars:3,
-    duracion:'2 horas', lecciones:'5 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#0e0e0e 0%,#1e1e16 50%,#080808 100%)',
-    land:'polygon(0 60%,15% 45%,30% 58%,45% 40%,60% 55%,75% 35%,90% 50%,100% 38%,100% 100%,0 100%)',
-    landC:'rgba(40,40,20,0.5)', glow:'radial-gradient(ellipse 55% 40% at 50% 35%, rgba(80,80,30,0.1) 0%, transparent 70%)',
-    descripcion:'El mejor vino del mundo servido a la temperatura incorrecta pierde toda su magia. Aprende las reglas de oro del servicio — temperatura, decantación, copas, orden de servicio — para impresionar en cualquier mesa.',
-    objetivos:[
-      'Conocer las temperaturas correctas para cada tipo de vino',
-      'Aprender a decantar vinos tintos con taninos y sedimentos',
-      'Seleccionar la copa adecuada para cada vino',
-      'Manejar el servicio en mesa como un profesional',
-      'Conservar correctamente botellas abiertas y sin abrir',
-    ],
-    temario:[
-      { t:'Temperatura de servicio: la guía definitiva', d:'25 min' },
-      { t:'Decantación: cuándo y cómo hacerlo', d:'25 min' },
-      { t:'Las copas: forma, tamaño y material', d:'20 min' },
-      { t:'El orden de servicio en una cena', d:'20 min' },
-      { t:'Conservación: del sacacorchos al frigorífico', d:'30 min' },
-    ],
-  },
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
 
-  // ── NIVEL 2 · PLATA ──
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'Análisis Sensorial Avanzado — La Rueda de Aromas',
-    brand:'Sensory Analysis', stars:4,
-    duracion:'5 horas', lecciones:'9 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1c1400 0%,#302200 50%,#0e0a00 100%)',
-    land:'polygon(0 52%,10% 38%,22% 52%,35% 30%,48% 46%,60% 25%,73% 42%,86% 22%,100% 38%,100% 100%,0 100%)',
-    landC:'rgba(70,55,0,0.55)', glow:'radial-gradient(ellipse 65% 45% at 50% 28%, rgba(180,140,0,0.1) 0%, transparent 70%)',
-    descripcion:'Profundiza en el análisis sensorial con las herramientas que usan los sommeliers certificados. La Rueda de Aromas del vino, los defectos más comunes, la evaluación de la calidad y la metodología SAT completa son los pilares de este curso.',
-    objetivos:[
-      'Dominar la Rueda de Aromas del vino con sus 100+ descriptores',
-      'Identificar los defectos del vino: corcho, oxidación, reducción',
-      'Aplicar la metodología SAT (Systematic Approach to Tasting)',
-      'Puntuar vinos siguiendo la escala de 100 puntos',
-      'Realizar análisis comparativos entre añadas y regiones',
-    ],
-    temario:[
-      { t:'La Rueda de Aromas: familia a familia', d:'45 min' },
-      { t:'Aromas frutales: bayas, cítricos y tropicales', d:'35 min' },
-      { t:'Aromas florales, especiados y minerales', d:'35 min' },
-      { t:'Aromas de crianza: vainilla, roble, tostados', d:'35 min' },
-      { t:'Defectos del vino: cómo detectarlos', d:'40 min' },
-      { t:'La metodología SAT completa', d:'45 min' },
-      { t:'La escala de 100 puntos: cómo puntuar', d:'30 min' },
-      { t:'Análisis comparativo: dos vinos, una uva', d:'40 min' },
-      { t:'Ejercicio final: cata a ciegas con corrección', d:'35 min' },
-    ],
-  },
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'Gastronomía Dominicana y Vino — El Arte del Maridaje Caribeño',
-    brand:'Dom. Gastronomy', stars:5,
-    duracion:'4.5 horas', lecciones:'9 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#200a00 0%,#361600 50%,#120600 100%)',
-    land:'polygon(0 58%,8% 42%,20% 56%,33% 35%,46% 52%,59% 28%,72% 46%,85% 26%,100% 40%,100% 100%,0 100%)',
-    landC:'rgba(90,30,0,0.55)', glow:'radial-gradient(ellipse 70% 50% at 50% 30%, rgba(200,60,0,0.12) 0%, transparent 70%)',
-    descripcion:'El curso más dominicano de nuestra academia. Aprende a maridar el mofongo con Albariño, el chivo guisado con un Garnacha del Priorat, y la bandera dominicana con un Malbec de Luján de Cuyo. La gastronomía del Caribe tiene maridajes perfectos esperándola.',
-    objetivos:[
-      'Comprender los 4 principios del maridaje: contraste, concordancia, región y textura',
-      'Maridar los 15 platos más icónicos de la cocina dominicana',
-      'Entender cómo el picante, el ácido y la grasa afectan al vino',
-      'Crear menús con maridaje para eventos y celebraciones',
-      'Recomendar vinos disponibles en RD para cada plato',
-    ],
-    temario:[
-      { t:'Los 4 principios del maridaje', d:'35 min' },
-      { t:'Mofongo: el rey del maridaje caribeño', d:'30 min' },
-      { t:'Sancocho, locrio y asopao', d:'30 min' },
-      { t:'Chivo guisado, pollo y carnes dominicanas', d:'35 min' },
-      { t:'Mariscos del Caribe: pescado al coco y camarones', d:'30 min' },
-      { t:'La Bandera Dominicana y sus vinos perfectos', d:'25 min' },
-      { t:'Postres criollos y vinos dulces', d:'25 min' },
-      { t:'Vinos disponibles en RD y cómo encontrarlos', d:'30 min' },
-      { t:'Diseña tu propio menú con maridaje', d:'40 min' },
-    ],
-  },
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'Burdeos y Borgoña — Las Cumbres del Vino Clásico',
-    brand:'Burdeos & Borgoña', stars:5,
-    duracion:'6 horas', lecciones:'10 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#200606 0%,#340a0a 50%,#120404 100%)',
-    land:'polygon(0 48%,8% 32%,18% 46%,30% 24%,43% 40%,56% 20%,68% 36%,80% 16%,92% 32%,100% 18%,100% 100%,0 100%)',
-    landC:'rgba(100,10,10,0.55)', glow:'radial-gradient(ellipse 65% 45% at 50% 28%, rgba(200,0,20,0.12) 0%, transparent 70%)',
-    descripcion:'Las dos regiones más influyentes en la historia del vino. Comprende qué hace tan especiales a un Château Pétrus, un Romanée-Conti o un Montrachet. Aprende el sistema de clasificaciones de 1855, los Grand Cru de Borgoña y cómo leer una etiqueta francesa.',
-    objetivos:[
-      'Dominar la geografía vinícola de Burdeos: Médoc, Saint-Émilion, Pomerol',
-      'Entender la clasificación de 1855 y los crus bourgeois',
-      'Conocer la jerarquía de Borgoña: regional, village, premier cru, grand cru',
-      'Identificar los principales productores de ambas regiones',
-      'Reconocer las diferencias entre las añadas más importantes',
-    ],
-    temario:[
-      { t:'Burdeos: historia y geografía del vino más famoso', d:'40 min' },
-      { t:'La Clasificación de 1855: los 5 premiers crus', d:'35 min' },
-      { t:'Médoc: Pauillac, Margaux, Saint-Julien', d:'40 min' },
-      { t:'Saint-Émilion y Pomerol: el Merlot en su trono', d:'35 min' },
-      { t:'Borgoña: la Côte d\'Or y sus mystères', d:'40 min' },
-      { t:'Los Grand Cru de Borgoña: Romanée-Conti y más', d:'35 min' },
-      { t:'Chablis, Mâconnais y Beaujolais', d:'30 min' },
-      { t:'Cómo leer una etiqueta francesa', d:'25 min' },
-      { t:'Las grandes añadas del siglo XXI', d:'30 min' },
-      { t:'Cata comparativa: Burdeos vs Borgoña', d:'50 min' },
-    ],
-  },
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'España y sus Grandes Regiones Vinícolas',
-    brand:'España', stars:4,
-    duracion:'4.5 horas', lecciones:'8 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#201000 0%,#341800 50%,#120800 100%)',
-    land:'polygon(0 55%,10% 40%,22% 54%,35% 32%,48% 50%,60% 28%,72% 46%,84% 24%,100% 38%,100% 100%,0 100%)',
-    landC:'rgba(90,40,0,0.55)', glow:'radial-gradient(ellipse 60% 45% at 50% 30%, rgba(200,90,0,0.1) 0%, transparent 70%)',
-    descripcion:'España es el país con más superficie de viñedo del mundo. De la Rioja al Priorat, de Jerez a Rías Baixas — descubre por qué los vinos españoles son el secreto mejor guardado de la enología mundial y los favoritos de los sommeliers para maridar.',
-    objetivos:[
-      'Conocer las 17 comunidades autónomas vinícolas de España',
-      'Dominar la clasificación española: Joven, Crianza, Reserva, Gran Reserva',
-      'Entender la grandeza de Rioja, Ribera del Duero y Priorat',
-      'Descubrir el Albariño de Rías Baixas y los blancos del norte',
-      'Apreciar el Sherry (Jerez) como el vino más complejo del mundo',
-    ],
-    temario:[
-      { t:'El sistema de clasificación español', d:'30 min' },
-      { t:'Rioja: Tempranillo en su tierra natal', d:'40 min' },
-      { t:'Ribera del Duero: potencia y elegancia', d:'35 min' },
-      { t:'Priorat: la llicorella y la concentración extrema', d:'30 min' },
-      { t:'Rías Baixas: Albariño y el mar cantábrico', d:'30 min' },
-      { t:'Jerez: el universo del Sherry', d:'40 min' },
-      { t:'Cava: el espumoso catalán', d:'25 min' },
-      { t:'Otros tesoros: Rueda, Toro, Bierzo', d:'30 min' },
-    ],
-  },
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'Espumosos del Mundo — Champagne, Cava y Prosecco',
-    brand:'Espumosos', stars:4,
-    duracion:'4 horas', lecciones:'7 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#081014 0%,#101e24 50%,#06090e 100%)',
-    land:'polygon(0 62%,12% 48%,24% 62%,36% 42%,50% 58%,62% 36%,75% 52%,88% 30%,100% 46%,100% 100%,0 100%)',
-    landC:'rgba(10,50,70,0.55)', glow:'radial-gradient(ellipse 60% 45% at 50% 30%, rgba(20,120,180,0.1) 0%, transparent 70%)',
-    descripcion:'Las burbujas merecen su propio estudio. Aprende a distinguir entre el Champagne francés, el Cava catalán, el Prosecco italiano y el Crémant. Conoce el método champenoise, la segunda fermentación y el enigmático mundo de los Dom Pérignon y Krug.',
-    objetivos:[
-      'Distinguir el Champagne de otros espumosos de calidad',
-      'Entender el método champenoise y la segunda fermentación',
-      'Conocer las diferencias entre Blanc de Blancs, Blanc de Noirs y Rosé',
-      'Evaluar Cava, Prosecco, Crémant y espumosos del Nuevo Mundo',
-      'Maridar espumosos con la gastronomía caribeña',
-    ],
-    temario:[
-      { t:'Historia de las burbujas: Dom Pérignon y el mito', d:'30 min' },
-      { t:'El método champenoise paso a paso', d:'40 min' },
-      { t:'Champagne: NV, Vintage y Prestige Cuvée', d:'40 min' },
-      { t:'Cava: el espumoso español', d:'30 min' },
-      { t:'Prosecco: el italiano del aperitivo', d:'25 min' },
-      { t:'Crémant, Sekt y espumosos del Nuevo Mundo', d:'30 min' },
-      { t:'Maridaje con espumosos: del jamón al ceviche', d:'25 min' },
-    ],
-  },
-  {
-    nivel:'plata', lbl:'Nivel 2 · Plata',
-    titulo:'Vinos Blancos del Mundo — Riesling, Chardonnay y Más',
-    brand:'Blancos', stars:3,
-    duracion:'3.5 horas', lecciones:'7 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#0e1612 0%,#1a2818 50%,#090e0a 100%)',
-    land:'polygon(0 60%,10% 45%,22% 58%,35% 40%,48% 54%,60% 35%,73% 50%,86% 32%,100% 46%,100% 100%,0 100%)',
-    landC:'rgba(20,60,30,0.55)', glow:'radial-gradient(ellipse 55% 40% at 50% 30%, rgba(40,120,60,0.1) 0%, transparent 70%)',
-    descripcion:'Los blancos son mucho más que acompañamiento de pescados. Aprende por qué un Riesling del Mosel puede vivir 30 años, por qué el Chardonnay sabe tan diferente según la región, y cómo el Sauvignon Blanc de Nueva Zelanda revolucionó el mundo del vino.',
-    objetivos:[
-      'Distinguir los estilos de Chardonnay: con y sin madera',
-      'Entender la escala de dulzor del Riesling alemán',
-      'Comparar Sauvignon Blanc de Sancerre y Marlborough',
-      'Descubrir los grandes blancos: Montrachet, Condrieu, Grüner Veltliner',
-      'Aprender el potencial de envejecimiento de los blancos',
-    ],
-    temario:[
-      { t:'Chardonnay: el camaleón del vino blanco', d:'35 min' },
-      { t:'Riesling: del seco al TBA (Trockenbeerenauslese)', d:'35 min' },
-      { t:'Sauvignon Blanc: Sancerre vs Nueva Zelanda', d:'30 min' },
-      { t:'Albariño, Pinot Grigio y Grüner Veltliner', d:'30 min' },
-      { t:'Viognier, Roussanne y los blancos del Ródano', d:'25 min' },
-      { t:'Grandes blancos que envejecen como tintos', d:'30 min' },
-      { t:'Blancos perfectos para el clima del Caribe', d:'25 min' },
-    ],
-  },
+const burger = document.getElementById('navBurger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  // ── NIVEL 3 · ORO ──
-  {
-    nivel:'oro', lbl:'Nivel 3 · Oro',
-    titulo:'Vinos del Nuevo Mundo — Argentina, Chile y California',
-    brand:'Nuevo Mundo', stars:4,
-    duracion:'5 horas', lecciones:'9 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#0c1800 0%,#182800 50%,#080e00 100%)',
-    land:'polygon(0 50%,8% 35%,18% 48%,30% 28%,43% 44%,56% 22%,70% 40%,82% 18%,94% 35%,100% 22%,100% 100%,0 100%)',
-    landC:'rgba(30,70,0,0.55)', glow:'radial-gradient(ellipse 65% 45% at 50% 28%, rgba(60,160,0,0.1) 0%, transparent 70%)',
-    descripcion:'El Nuevo Mundo democratizó el vino. Desde el Malbec de Mendoza a los icónicos Cabernets de Napa Valley, pasando por el Carménère chileno — aprende cómo estas jóvenes regiones desafiaron y superaron al Viejo Mundo en muchas categorías.',
-    objetivos:[
-      'Entender la diferencia filosófica entre el Viejo y el Nuevo Mundo vinícola',
-      'Dominar las regiones de Argentina: Mendoza, Salta, Patagonia',
-      'Conocer las zonas clave de Chile: Maipo, Colchagua, Casablanca',
-      'Estudiar California: Napa Valley, Sonoma y los Cult Wines',
-      'Evaluar la relación calidad-precio del Nuevo Mundo',
-    ],
-    temario:[
-      { t:'El Nuevo Mundo: filosofía y diferencias', d:'30 min' },
-      { t:'Argentina: Malbec de altura y altitud', d:'40 min' },
-      { t:'Mendoza: Luján de Cuyo y Valle de Uco', d:'35 min' },
-      { t:'Chile: de Casablanca al Maipo', d:'35 min' },
-      { t:'Carménère: la uva olvidada de Burdeos', d:'30 min' },
-      { t:'California: Napa Valley y los Cult Wines', d:'40 min' },
-      { t:'Zinfandel, Pinot Noir de Oregón y Washington', d:'35 min' },
-      { t:'Australia: Barossa Valley y el Shiraz', d:'30 min' },
-      { t:'Maridaje: Nuevo Mundo y cocina dominicana', d:'25 min' },
-    ],
-  },
-  {
-    nivel:'oro', lbl:'Nivel 3 · Oro',
-    titulo:'Degustación a Ciegas — El Máximo Desafío del Sommelier',
-    brand:'Blind Tasting', stars:5,
-    duracion:'6 horas', lecciones:'10 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#060606 0%,#0e0e0e 50%,#040404 100%)',
-    land:'polygon(0 45%,10% 30%,22% 44%,35% 20%,48% 38%,62% 16%,75% 34%,88% 14%,100% 30%,100% 100%,0 100%)',
-    landC:'rgba(20,20,20,0.7)', glow:'radial-gradient(ellipse 55% 40% at 50% 28%, rgba(184,134,11,0.14) 0%, transparent 70%)',
-    descripcion:'La cata a ciegas es el arte definitivo del sommelier. Sin ver la etiqueta, solo con los sentidos, debes identificar la uva, la región, la añada y el productor. Este curso avanzado te da el método sistemático que usan los candidatos al Master Sommelier.',
-    objetivos:[
-      'Aplicar el método de deducción sistemática en cata a ciegas',
-      'Identificar uvas tintas y blancas solo por color, aroma y sabor',
-      'Deducir la región y el clima por las características del vino',
-      'Estimar la añada por la evolución y el grado de madurez',
-      'Presentar una cata a ciegas en formato de examen profesional',
-    ],
-    temario:[
-      { t:'La filosofía de la cata a ciegas', d:'25 min' },
-      { t:'El método sistemático de deducción', d:'45 min' },
-      { t:'Claves visuales: color, opacidad, bordes', d:'35 min' },
-      { t:'Claves aromáticas: frutas, flores y terciarios', d:'50 min' },
-      { t:'Claves en boca: acidez, taninos, alcohol, cuerpo', d:'45 min' },
-      { t:'Deducción de región por perfil climático', d:'40 min' },
-      { t:'Deducción de añada por evolución', d:'35 min' },
-      { t:'Práctica: tintos — 3 vinos a ciegas', d:'50 min' },
-      { t:'Práctica: blancos — 3 vinos a ciegas', d:'45 min' },
-      { t:'Simulacro de examen oficial', d:'50 min' },
-    ],
-  },
-  {
-    nivel:'oro', lbl:'Nivel 3 · Oro',
-    titulo:'Italianos de Alto Vuelo — Barolo, Brunello y Super Tuscans',
-    brand:'Italia', stars:5,
-    duracion:'5 horas', lecciones:'9 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1e0808 0%,#301010 50%,#100505 100%)',
-    land:'polygon(0 52%,8% 36%,20% 50%,33% 28%,46% 44%,60% 22%,73% 40%,86% 18%,100% 34%,100% 100%,0 100%)',
-    landC:'rgba(80,15,15,0.55)', glow:'radial-gradient(ellipse 60% 45% at 50% 28%, rgba(180,30,30,0.1) 0%, transparent 70%)',
-    descripcion:'Italia tiene más variedades autóctonas que ningún otro país. El Nebbiolo del Piamonte, el Sangiovese de la Toscana, la Corvina del Véneto — y los revolucionarios Super Tuscans que rompieron todas las reglas. Un viaje épico por la bota más vinícola del mundo.',
-    objetivos:[
-      'Comprender el sistema DOC, DOCG e IGT italiano',
-      'Dominar los vinos del Piamonte: Barolo, Barbaresco y Barbera',
-      'Estudiar la Toscana: Brunello, Chianti y los Super Tuscans',
-      'Conocer el Véneto: Amarone, Soave y Prosecco',
-      'Descubrir las joyas del sur: Sicilia, Cerdeña y Campania',
-    ],
-    temario:[
-      { t:'El sistema DOC / DOCG / IGT: cómo leerlo', d:'30 min' },
-      { t:'Piamonte: el Nebbiolo y el "rey Barolo"', d:'40 min' },
-      { t:'Barbaresco, Barbera y Dolcetto', d:'35 min' },
-      { t:'Toscana: Chianti Classico y sus zonas', d:'35 min' },
-      { t:'Brunello di Montalcino: el más longevo de Italia', d:'35 min' },
-      { t:'Los Super Tuscans: Sassicaia, Ornellaia, Masseto', d:'40 min' },
-      { t:'Amarone della Valpolicella: la pasión en copa', d:'35 min' },
-      { t:'El sur de Italia: Sicilia, Aglianico y Nero d\'Avola', d:'30 min' },
-      { t:'Cata comparativa: 4 grandes italianos', d:'40 min' },
-    ],
-  },
-  {
-    nivel:'oro', lbl:'Nivel 3 · Oro',
-    titulo:'Vinos Espirituosos — Ron Dominicano y Licores del Mundo',
-    brand:'Spirits', stars:4,
-    duracion:'4 horas', lecciones:'8 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1a0a00 0%,#2c1400 50%,#0e0600 100%)',
-    land:'polygon(0 58%,10% 44%,22% 58%,34% 36%,46% 52%,58% 30%,70% 46%,82% 26%,94% 42%,100% 28%,100% 100%,0 100%)',
-    landC:'rgba(80,35,0,0.55)', glow:'radial-gradient(ellipse 60% 45% at 50% 30%, rgba(180,80,0,0.1) 0%, transparent 70%)',
-    descripcion:'El sommelier moderno debe conocer no solo el vino sino el mundo de los espirituosos. Este curso pone en valor nuestro Ron Dominicano — el mejor del mundo según muchos expertos — junto al Whisky escocés, el Cognac y los grandes licores internacionales.',
-    objetivos:[
-      'Entender el proceso de destilación y crianza de los espirituosos',
-      'Conocer en profundidad el Ron Dominicano y sus marcas icónicas',
-      'Distinguir entre los estilos de Ron: agrícola, industrial y añejo',
-      'Estudiar el Whisky: Scotch, Bourbon, Irish y Japonés',
-      'Conocer el Cognac, Armagnac y los brandys del mundo',
-    ],
-    temario:[
-      { t:'La destilación: del fermento al espíritu', d:'30 min' },
-      { t:'Ron Dominicano: historia, terroir y marcas', d:'45 min' },
-      { t:'Estilos de Ron: Cuba, Barbados, Jamaica, RD', d:'35 min' },
-      { t:'Whisky Escocés: las 5 regiones', d:'35 min' },
-      { t:'Bourbon americano y Rye Whiskey', d:'30 min' },
-      { t:'Cognac y Armagnac: el brandy francés', d:'30 min' },
-      { t:'Tequila, Mezcal y Sotol mexicanos', d:'25 min' },
-      { t:'Maridaje: espirituosos y habanos dominicanos', d:'30 min' },
-    ],
-  },
-
-  // ── DIPLOMADO ──
-  {
-    nivel:'diplomado', lbl:'Diplomado Profesional',
-    titulo:'Sommelier Profesional — Módulo I: Bases Técnicas y Cata Oficial',
-    brand:'Diplomado I', stars:5,
-    duracion:'15 horas', lecciones:'20 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#1e1400 0%,#342000 50%,#0e0a00 100%)',
-    land:'polygon(0 48%,6% 32%,16% 46%,28% 22%,40% 38%,54% 18%,66% 36%,80% 14%,92% 30%,100% 16%,100% 100%,0 100%)',
-    landC:'rgba(100,72,0,0.55)', glow:'radial-gradient(ellipse 70% 50% at 50% 26%, rgba(232,200,64,0.14) 0%, transparent 70%)',
-    descripcion:'El primer módulo del Diplomado Sommelier Profesional te prepara para operar con excelencia técnica. Cata sistemática SAT, servicio de sala, gestión de carta de vinos y conocimiento profundo de 40 regiones son el fundamento de este programa intensivo reconocido en el Caribe.',
-    objetivos:[
-      'Certificarte como Sommelier de Nivel 1 por El Sommelier RD',
-      'Dominar la cata sistemática SAT con precisión profesional',
-      'Gestionar una carta de vinos para restaurante o hotel',
-      'Manejar el servicio en sala: decantación, ordre de service, temperaturas',
-      'Presentar una cata profesional ante clientes e invitados',
-    ],
-    temario:[
-      { t:'Introducción al Diplomado y metodología de evaluación', d:'45 min' },
-      { t:'Repaso de Viticultura y Vinificación avanzada', d:'60 min' },
-      { t:'Cata SAT — Nivel 1 y 2 completo', d:'90 min' },
-      { t:'El servicio en sala: protocolo y errores comunes', d:'60 min' },
-      { t:'Gestión de bodega y carta de vinos', d:'75 min' },
-      { t:'Maridaje profesional: menú completo de 5 tiempos', d:'90 min' },
-      { t:'Los grandes vinos de Burdeos y Borgoña en profundidad', d:'90 min' },
-      { t:'Italia y España: los pilares del Viejo Mundo', d:'75 min' },
-      { t:'El Nuevo Mundo: Argentina, Chile, California', d:'60 min' },
-      { t:'Examen intermedio: cata escrita + oral', d:'120 min' },
-    ],
-  },
-  {
-    nivel:'diplomado', lbl:'Diplomado Profesional',
-    titulo:'Sommelier Profesional — Módulo II: Sala, Liderazgo y Bodega',
-    brand:'Diplomado II', stars:5,
-    duracion:'15 horas', lecciones:'18 lecciones', idioma:'Español',
-    bg:'linear-gradient(155deg,#140a1e 0%,#201230 50%,#0a0510 100%)',
-    land:'polygon(0 50%,8% 34%,18% 48%,30% 26%,44% 42%,58% 20%,72% 38%,86% 16%,100% 32%,100% 100%,0 100%)',
-    landC:'rgba(60,20,90,0.55)', glow:'radial-gradient(ellipse 65% 45% at 50% 26%, rgba(200,160,50,0.12) 0%, transparent 70%)',
-    descripcion:'El segundo módulo del Diplomado convierte al sommelier técnico en un líder de sala y consultor de vinos. Gestión de personal, creación de programas de vinos, consultoría para restaurantes y hoteles del Caribe, y el arte de comunicar el vino con pasión.',
-    objetivos:[
-      'Liderar el equipo de sala como Head Sommelier',
-      'Crear y gestionar programas de vinos para establecimientos de lujo',
-      'Desarrollar degustaciones para clientes corporativos y privados',
-      'Gestionar la relación con distribuidoras y bodegas importadoras',
-      'Certificarte como Sommelier Profesional El Sommelier RD',
-    ],
-    temario:[
-      { t:'El Head Sommelier: rol, responsabilidades y liderazgo', d:'60 min' },
-      { t:'Diseño y gestión de carta de vinos (20-200 referencias)', d:'90 min' },
-      { t:'Negociación con importadores y distribuidoras en RD', d:'60 min' },
-      { t:'Programa de copa: rentabilidad y rotación', d:'75 min' },
-      { t:'Catas privadas y corporativas: cómo organizarlas', d:'75 min' },
-      { t:'Comunicación del vino: storytelling para el cliente', d:'60 min' },
-      { t:'El mercado del vino en República Dominicana', d:'60 min' },
-      { t:'Vinos espirituosos avanzado: Ron Artesanal RD', d:'75 min' },
-      { t:'Examen final: presentación de proyecto integrador', d:'180 min' },
-    ],
-  },
-  {
-    nivel:'diplomado', lbl:'Diplomado Profesional',
-    titulo:'Examen de Certificación — Sommelier El Sommelier RD',
-    brand:'Examen Final', stars:5,
-    duracion:'4 horas', lecciones:'3 pruebas', idioma:'Español',
-    bg:'linear-gradient(155deg,#280000 0%,#400000 50%,#140000 100%)',
-    land:'polygon(0 44%,8% 28%,18% 42%,30% 18%,44% 36%,58% 14%,72% 32%,86% 10%,100% 26%,100% 100%,0 100%)',
-    landC:'rgba(120,0,0,0.6)', glow:'radial-gradient(ellipse 70% 50% at 50% 24%, rgba(232,200,64,0.16) 0%, transparent 70%)',
-    descripcion:'El examen final del Diplomado consta de tres pruebas evaluadas por un tribunal de expertos: cata a ciegas de 6 vinos, servicio en sala ante un cliente simulado y defensa oral de tu proyecto de carta de vinos. Los aprobados reciben la certificación oficial de Sommelier El Sommelier RD.',
-    objetivos:[
-      'Demostrar competencia técnica en cata sistemática SAT',
-      'Ejecutar un servicio de sala completo bajo presión',
-      'Defender tu proyecto de carta de vinos ante el tribunal',
-      'Obtener la Certificación Oficial de Sommelier El Sommelier RD',
-      'Acceder a la red de sommeliers certificados del Caribe',
-    ],
-    temario:[
-      { t:'Prueba 1: Cata a ciegas — 6 vinos (3 tintos, 2 blancos, 1 espumoso)', d:'90 min' },
-      { t:'Prueba 2: Servicio en sala ante cliente evaluador', d:'60 min' },
-      { t:'Prueba 3: Defensa del proyecto de carta de vinos', d:'60 min' },
-    ],
-  },
-];
-
-const MODULOS = {
-  bronce:'🥉 Módulo Bronce — Fundamentos del Vino',
-  plata:'🥈 Módulo Plata — Nivel Intermedio',
-  oro:'🥇 Módulo Oro — Nivel Avanzado',
-  diplomado:'🎓 Diplomado Sommelier Profesional',
-};
-
-let activeFilter = 'todos';
-
-function stars(n, big) {
-  const cls = big ? 'detail-stars' : 'cstars';
-  const scls = big ? 's' : 's';
-  let s = '';
-  for (let i = 1; i <= 5; i++)
-    s += `<span class="${scls} ${i <= n ? 'on' : 'off'}">★</span>`;
-  return `<div class="${cls}">${s}</div>`;
+const vc = document.getElementById('vineRows');
+for (let i = 0; i < 18; i++) {
+  const r = document.createElement('div');
+  r.className = 'vine-row';
+  r.style.bottom = (i * 5.5) + '%';
+  vc.appendChild(r);
 }
 
-function render() {
-  const wrap = document.getElementById('coursesWrap');
-  const noR  = document.getElementById('no-results');
-  const max  = parseInt(document.getElementById('showSelect').value);
-
-  const list = activeFilter === 'todos' ? COURSES : COURSES.filter(c => c.nivel === activeFilter);
-  const shown = list.slice(0, max);
-
-  if (!shown.length) { wrap.innerHTML = ''; noR.style.display = 'block'; return; }
-  noR.style.display = 'none';
-
-  let html = '';
-  let lastNivel = null;
-
-  shown.forEach((c, i) => {
-    if (c.nivel !== lastNivel) {
-      html += `<div class="modulo-div">${MODULOS[c.nivel] || c.nivel}</div>`;
-      lastNivel = c.nivel;
+(function() {
+  const canvas = document.getElementById('bubbleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, bubbles = [];
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function mkBubble() { return { x: rand(W*.1,W*.9), y: H+rand(0,30), r: rand(1,4), vy: rand(.3,1.1), vx: rand(-.2,.2), alpha: rand(.05,.22), life:0, maxLife: rand(120,260) }; }
+  for (let i = 0; i < 60; i++) { const b = mkBubble(); b.y = rand(0,H); bubbles.push(b); }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (let i = bubbles.length-1; i >= 0; i--) {
+      const b = bubbles[i];
+      b.y -= b.vy; b.x += b.vx; b.life++;
+      const a = b.alpha * Math.min(1,(b.maxLife-b.life)/30);
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(184,134,11,${a})`; ctx.lineWidth = .8; ctx.stroke();
+      if (b.life >= b.maxLife || b.y < -10) bubbles[i] = mkBubble();
     }
-    const realIdx = COURSES.indexOf(c);
-    html += `
-    <div class="course-card" onclick="abrirDetalle(${realIdx})">
-      <div class="cimg">
-        <div class="cimg-bg" style="background:${c.bg}">
-          <div class="cimg-glow" style="background:${c.glow}"></div>
-          <div class="cimg-land" style="background:${c.landC};clip-path:${c.land}"></div>
-        </div>
-        <div class="cbrand">
-          <div class="cbrand-logo">S</div>
-          <div class="cbrand-name">${c.brand}</div>
-        </div>
-      </div>
-      <div class="cinfo">
-        <div class="clevel">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity="0.55"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-          ${c.lbl}
-        </div>
-        <div class="ctitle">${c.titulo}</div>
-        ${stars(c.stars, false)}
-      </div>
-    </div>`;
-  });
-
-  wrap.innerHTML = html;
-}
-
-function abrirDetalle(idx) {
-  const c = COURSES[idx];
-  if (!c) return;
-
-  document.getElementById('det-header-titulo').textContent = c.brand;
-  document.getElementById('det-header-meta').textContent = c.lbl;
-
-  const objetivosHTML = (c.objetivos || []).map(o => `<div class="detail-objetivo">${o}</div>`).join('');
-  const temarioHTML = (c.temario || []).map((t, i) => `
-    <div class="detail-tema">
-      <div class="detail-tema-num">${String(i+1).padStart(2,'0')}</div>
-      <div>
-        <div class="detail-tema-titulo">${t.t}</div>
-        <div class="detail-tema-dur">${t.d}</div>
-      </div>
-    </div>`).join('');
-
-  document.getElementById('det-body').innerHTML = `
-    <div class="detail-hero">
-      <div class="detail-hero-bg" style="background:${c.bg}">
-        <div class="detail-hero-glow" style="background:${c.glow}"></div>
-        <div class="detail-hero-land" style="background:${c.landC};clip-path:${c.land}"></div>
-      </div>
-      <div class="detail-hero-brand">
-        <div class="detail-hero-logo">S</div>
-        <div class="detail-hero-name">${c.brand}</div>
-      </div>
-      <div class="detail-hero-badge">${c.lbl}</div>
-    </div>
-
-    <div class="detail-content">
-      <div class="detail-titulo">${c.titulo}</div>
-      <div class="detail-subtitulo">El Sommelier RD Academy</div>
-
-      <div class="detail-stars-row">
-        ${stars(c.stars, true)}
-        <span class="detail-rating-count">${c.stars}.0 / 5.0 · ${c.nivel === 'diplomado' ? 'Certificación oficial' : 'Curso gratuito'}</span>
-      </div>
-
-      <div class="detail-info-grid">
-        <div class="detail-info-box">
-          <div class="lbl">Duración</div>
-          <div class="val">${c.duracion}</div>
-        </div>
-        <div class="detail-info-box">
-          <div class="lbl">Contenido</div>
-          <div class="val">${c.lecciones}</div>
-        </div>
-        <div class="detail-info-box">
-          <div class="lbl">Idioma</div>
-          <div class="val">${c.idioma}</div>
-        </div>
-        <div class="detail-info-box">
-          <div class="lbl">Nivel</div>
-          <div class="val">${c.lbl.split('·')[0].trim()}</div>
-        </div>
-      </div>
-
-      <div class="detail-seccion-titulo">Descripción</div>
-      <div class="detail-desc">${c.descripcion}</div>
-
-      ${objetivosHTML ? `
-        <div class="detail-seccion-titulo">Lo que aprenderás</div>
-        ${objetivosHTML}
-      ` : ''}
-
-      ${temarioHTML ? `
-        <div class="detail-seccion-titulo">Temario del curso</div>
-        <div class="detail-temario">${temarioHTML}</div>
-      ` : ''}
-    </div>`;
-
-  document.getElementById('detailOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  history.pushState({ detail: true }, '');
-}
-
-function cerrarDetalle() {
-  document.getElementById('detailOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-window.addEventListener('popstate', () => {
-  if (document.getElementById('detailOverlay').classList.contains('open')) {
-    cerrarDetalle();
+    while (bubbles.length < 80) bubbles.push(mkBubble());
+    requestAnimationFrame(draw);
   }
-});
-
-function setFilter(btn, nivel) {
-  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
-  btn.classList.add('on');
-  activeFilter = nivel;
-  render();
-}
-
-function toggleFilter() { document.getElementById('filterPanel').classList.toggle('open'); }
-function openNav()  { document.getElementById('navOverlay').classList.add('open'); }
-function closeNav() { document.getElementById('navOverlay').classList.remove('open'); }
-
-render();
+  draw();
+})();
 </script>
 </body>
 </html>
